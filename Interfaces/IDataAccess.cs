@@ -10,6 +10,6 @@ namespace Interfaces
 
         public DataTable GetList();
 
-        DataTable GetTableByFirstName(string query);
+        DataTable GetDataByFirstName(string query);
     }
 }

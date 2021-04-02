@@ -16,8 +16,11 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <TextBox x:Name="tbSearchQuery" HorizontalAlignment="Left" Margin="0,0,0,0" Text="Binding Path=query, Mode=TwoWay" TextWrapping="Wrap" VerticalAlignment="Top" Width="170" Grid.Row="0" Grid.Column="0" Background="#FFE4E2E2"> <!-- Binding="{Binding Path=query}"-->
-        </TextBox>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+            <TextBox x:Name="tbSearchQuery" HorizontalAlignment="Left" Margin="0,0,0,0" Text="{Binding Path=query, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="170" Background="#FFE4E2E2" />
+            <RadioButton x:Name="rbSqlite" Content="Sqlite" HorizontalAlignment="Left" Margin="289,3,0,0" VerticalAlignment="Top" GroupName="dbSelection"/>
+            <RadioButton x:Name="rbSqlServer" Content="Sql Server" HorizontalAlignment="Left" Margin="70,3,0,0" VerticalAlignment="Top" IsChecked="True" GroupName="dbSelection"/>
+        </StackPanel>
         <DataGrid x:Name="dataGridView" Grid.Row="1" Grid.Column="0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№ автора" Width="80"  Binding="{Binding Id}"></DataGridTextColumn>
@@ -25,6 +28,6 @@
                 <DataGridTextColumn Header="Фамилия" Width="150" Binding="{Binding LastName}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        
+
     </Grid>
 </Window>

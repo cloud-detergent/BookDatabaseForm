@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Entities;
+using Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -28,7 +30,7 @@ namespace UI
 
         public string query;
 
-        SqlServerAccessLayer.BookAccess bookAccess = new SqlServerAccessLayer.BookAccess(connStrSqlServer);
+        IDataAccess<Book> bookAccess = new SqlServerAccessLayer.BookAccess(connStrSqlServer);
 
         public MainWindow()
         {
@@ -36,6 +38,22 @@ namespace UI
             this.tbSearchQuery.DataContext = query;
             this.tbSearchQuery.DataContextChanged += TbSearchQuery_DataContextChanged;
             this.tbSearchQuery.TextChanged += TbSearchQuery_TextChanged;
+
+            rbSqlite.Checked += DatabaseSourceChanged;
+            rbSqlServer.Checked += DatabaseSourceChanged;
+        }
+
+        private void DatabaseSourceChanged(object sender, RoutedEventArgs e)
+        {
+            if (rbSqlServer.IsChecked ?? false)
+            {
+                bookAccess = new SqlServerAccessLayer.BookAccess(connStrSqlServer);
+            }
+
+            if (rbSqlite.IsChecked ?? false)
+            {
+                bookAccess = new SqliteAccessLayer.BookAccess(connStrSqlite);
+            }
         }
 
         private void TbSearchQuery_TextChanged(object sender, TextChangedEventArgs e)
@@ -53,16 +71,8 @@ namespace UI
             Debug.WriteLine(this.tbSearchQuery.Text);
             Debug.WriteLine(this.query);
 
-            DataTable dt = bookAccess.GetTableByFirstName(this.tbSearchQuery.Text);
+            DataTable dt = bookAccess.GetDataByFirstName(this.tbSearchQuery.Text);
             dataGridView.ItemsSource = dt.DefaultView;
-            /*
-             DataTable dt = new DataTable();
-		    dt.Columns.Add("One");
-		    dt.Columns.Add("Two");
-		
-		    dt.Rows.Add(new string[]{"1", "2"});
-		    dt.Rows.Add(new string[]{"3", "4"});
-             */
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

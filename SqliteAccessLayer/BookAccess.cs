@@ -46,7 +46,7 @@ FROM Authors a
                 //};
 
                 Book book = books.Find(x => x.Name.Equals(sdr.GetString(1)));
-                
+
                 flag = true;
                 if (book is null)
                 {
@@ -68,7 +68,7 @@ FROM Authors a
                 book.Authors.Add(author);
 
                 if (!flag)
-                { 
+                {
                     books.Add(book);
                 }
             }
@@ -82,9 +82,35 @@ FROM Authors a
             return new DataTable();
         }
 
-        public DataTable GetTableByFirstName(string query)
+        public DataTable GetDataByFirstName(string query)
         {
-            return new DataTable();
+            // SELECT b.id, b.name, a.id, a.firstName, a.lastName
+            IEnumerable<Book> list = GetList(10, 0);
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Id книги");
+            dt.Columns.Add("Название");
+            dt.Columns.Add("Id автора");
+            dt.Columns.Add("Имя автора");
+            dt.Columns.Add("Фамилия автора");
+
+            foreach (Book item in list)
+            {
+                var a = item.Authors;
+
+                string[] bookParams = new string[5]
+                    {
+                        item.Id.ToString(),
+                        item.Name,
+                        string.Join("; ", a.Select(x => x.Id)),
+                        string.Join("; ", a.Select(x => x.FirstName)),
+                        string.Join("; ", a.Select(x => x.LastName))
+                    };
+
+                dt.Rows.Add(bookParams);
+            }
+
+            return dt;
         }
     }
 }

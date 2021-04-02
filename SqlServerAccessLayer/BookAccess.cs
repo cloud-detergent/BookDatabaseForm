@@ -106,7 +106,7 @@ WHERE a.[FirstName] LIKE @query";
             return dt;
         }
 
-        public DataTable GetTableByFirstName(string query = "")
+        public DataTable GetDataByFirstName(string query = "")
         {
             DataTable dt;
 

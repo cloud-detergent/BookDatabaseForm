@@ -47,7 +47,7 @@ namespace SqlServerAccessLayer
             return new DataTable();
         }
 
-        public DataTable GetTableByFirstName(string query)
+        public DataTable GetDataByFirstName(string query)
         {
             return new DataTable();
         }

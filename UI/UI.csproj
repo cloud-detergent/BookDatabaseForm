@@ -13,4 +13,10 @@
     <ProjectReference Include="..\SqlServerAccessLayer\SqlServerAccessLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="database.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
