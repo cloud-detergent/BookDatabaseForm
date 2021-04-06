@@ -9,5 +9,7 @@ namespace Interfaces
         public IEnumerable<T> GetList(int pageSize, int offset, string query = "");
 
         public DataTable GetDataTable(int pageSize, int offset, string query = "");
+        
+        public void CreateEntity(T entity);
     }
 }

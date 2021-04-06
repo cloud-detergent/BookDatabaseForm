@@ -141,3 +141,28 @@ USE [master]
 GO
 ALTER DATABASE [Library] SET  READ_WRITE 
 GO
+
+CREATE PROCEDURE CreateBook 
+	@BookName nvarchar(50),
+	@AuthorId int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    INSERT INTO Books([Name])
+	VALUES (@BookName);
+
+	
+	DECLARE @NewId int;
+
+	SET @NewId =  (SELECT TOP 1 Id
+					FROM Books
+					ORDER BY Id DESC);
+
+	INSERT INTO AuthorsBooks([BookId], [AuthorId])
+	VALUES(@NewId, @AuthorId);
+
+END
+GO

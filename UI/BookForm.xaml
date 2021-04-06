@@ -1,0 +1,30 @@
+﻿<Window x:Class="UI.BookForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UI"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="250" Width="500" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Label Content="Название книги" Grid.Row="0" Grid.Column="0"/>
+        <TextBox x:Name="tbName" HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170" Background="#FFE4E2E2"  Grid.Row="0" Grid.Column="1" />
+
+
+        <Label Content="Выберите автора" Grid.Row="1" Grid.Column="0" />
+        <ListBox x:Name="lbAuthors" HorizontalAlignment="Left" Margin="0,0,0,0"  VerticalAlignment="Top" Width="170" Height="150" Background="#FFE4E2E2"  Grid.Row="1" Grid.Column="1" />
+
+        <Button Content="Добавить книгу" Width="170" Height="30" Grid.Row="2" Grid.Column="0" Click="ButtonAddBook_Click"/>
+    </Grid>
+</Window>

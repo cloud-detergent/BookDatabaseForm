@@ -79,6 +79,11 @@ FROM Authors a
             return new DataTable();
         }
 
+        public void CreateEntity(Book entity)
+        {
+            throw new NotImplementedException();
+        }
+
         //public DataTable GetDataByQuery(string query)
         //{
         //    // SELECT b.id, b.name, a.id, a.firstName, a.lastName

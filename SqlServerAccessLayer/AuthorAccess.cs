@@ -46,5 +46,10 @@ namespace SqlServerAccessLayer
         {
             return new DataTable();
         }
+
+        public void CreateEntity(Author entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

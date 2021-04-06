@@ -30,6 +30,7 @@ namespace UI
 
         public string query;
 
+        IDataAccess<Author> authorAccess = new SqlServerAccessLayer.AuthorAccess(connStrSqlServer);
         IDataAccess<Book> bookAccess = new SqlServerAccessLayer.BookAccess(connStrSqlServer);
 
         public MainWindow()
@@ -48,11 +49,13 @@ namespace UI
             if (rbSqlServer.IsChecked ?? false)
             {
                 bookAccess = new SqlServerAccessLayer.BookAccess(connStrSqlServer);
+                authorAccess = new SqlServerAccessLayer.AuthorAccess(connStrSqlServer);
             }
 
             if (rbSqlite.IsChecked ?? false)
             {
                 bookAccess = new SqliteAccessLayer.BookAccess(connStrSqlite);
+                authorAccess = new SqliteAccessLayer.AuthorAccess(connStrSqlite);
             }
         }
 
@@ -77,8 +80,16 @@ namespace UI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            DataTable dt = bookAccess.GetDataTable(0, 10);
+            DataTable dt = bookAccess.GetDataTable(10, 0);
             dataGridView.ItemsSource = dt.DefaultView;
+        }
+
+        BookForm creationForm;
+
+        private void ButtonAddBook_Click(object sender, RoutedEventArgs e)
+        {
+            creationForm = new BookForm(authorAccess, bookAccess);
+            creationForm.ShowDialog();
         }
     }
 }
