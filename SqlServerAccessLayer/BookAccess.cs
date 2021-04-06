@@ -21,28 +21,22 @@ namespace SqlServerAccessLayer
 FROM [Authors] a
     INNER JOIN AuthorsBooks AB on a.Id = AB.AuthorId
     INNER JOIN Books b on b.Id = AB.BookId
-ORDER BY b.Id ASC";
-        /*OFFSET @startIndex ROWS 
-        FETCH NEXT @pageSize ROWS ONLY";*/
+ORDER BY b.Id ASC
+     WHERE a.[FirstName] LIKE @query
+        OFFSET @startIndex ROWS 
+        FETCH NEXT @pageSize ROWS ONLY";
 
-        string selectQueryWithFilter = @"
-SELECT b.Id, b.Name, a.Id, a.FirstName, a.LastName
-FROM [Authors] a
-    INNER JOIN AuthorsBooks AB on a.Id = AB.AuthorId
-    INNER JOIN Books b on b.Id = AB.BookId
-WHERE a.[FirstName] LIKE @query";
-
-        public IEnumerable<Book> GetList(int pageSize, int offset)
+        public IEnumerable<Book> GetList(int pageSize, int offset, string query = "")
         {
             List<Book> books = new List<Book>();
 
             SqlConnection connection = new SqlConnection(connStr);
             connection.Open();
 
-            //SqlCommand cmd = new SqlCommand(selectQuery, connection);
             var cmd = connection.CreateCommand();
             cmd.CommandText = selectQuery;
 
+            cmd.Parameters.AddWithValue("@query", $"%{query}%");
             cmd.Parameters.AddWithValue("@startIndex", offset);
             cmd.Parameters.AddWithValue("@pageSize", pageSize);
 
@@ -51,12 +45,6 @@ WHERE a.[FirstName] LIKE @query";
             bool flag = false;
             while (sdr.Read())
             {
-                //var book = new Book()
-                //{
-                //    Id = Convert.ToInt32(sdr["id"]),
-                //    Name = sdr["name"].ToString()
-                //};
-
                 Book book = books.Find(x => x.Name.Equals(sdr.GetString(1)));
                 
                 flag = true;
@@ -89,7 +77,7 @@ WHERE a.[FirstName] LIKE @query";
             return books;
         }
 
-        public DataTable GetList()
+        public DataTable GetDataTable(int pageSize, int offset, string query = "")
         {
             DataTable dt;
 
@@ -106,25 +94,25 @@ WHERE a.[FirstName] LIKE @query";
             return dt;
         }
 
-        public DataTable GetDataByFirstName(string query = "")
-        {
-            DataTable dt;
+        //public DataTable GetDataByQuery(string query = "")
+        //{
+        //    DataTable dt;
 
-            using (SqlConnection connection = new SqlConnection(connStr))
-            {
-                connection.Open();
+        //    using (SqlConnection connection = new SqlConnection(connStr))
+        //    {
+        //        connection.Open();
 
-                var cmd = connection.CreateCommand();
-                cmd.CommandText = selectQueryWithFilter;
+        //        var cmd = connection.CreateCommand();
+        //        cmd.CommandText = selectQueryWithFilter;
 
-                cmd.Parameters.AddWithValue("@query", $"%{query}%");
+        //        cmd.Parameters.AddWithValue("@query", $"%{query}%");
 
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd);
-                dt = new DataTable();
-                dataAdapter.Fill(dt);
-            }
+        //        SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd);
+        //        dt = new DataTable();
+        //        dataAdapter.Fill(dt);
+        //    }
 
-            return dt;
-        }
+        //    return dt;
+        //}
     }
 }

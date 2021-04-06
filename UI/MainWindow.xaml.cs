@@ -71,13 +71,13 @@ namespace UI
             Debug.WriteLine(this.tbSearchQuery.Text);
             Debug.WriteLine(this.query);
 
-            DataTable dt = bookAccess.GetDataByFirstName(this.tbSearchQuery.Text);
+            DataTable dt = bookAccess.GetDataTable(0, 10, this.tbSearchQuery.Text);
             dataGridView.ItemsSource = dt.DefaultView;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            DataTable dt = bookAccess.GetList();
+            DataTable dt = bookAccess.GetDataTable(0, 10);
             dataGridView.ItemsSource = dt.DefaultView;
         }
     }

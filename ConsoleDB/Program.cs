@@ -27,10 +27,10 @@ namespace ConsoleDB
             do
             {
                 //var bookList = bookAccess.GetList(offset, pageSize);
-                var bookList = bookAccess.GetList();
+                //var bookList = bookAccess.GetList();
                 var authorList = authorAccess.GetList(offset, pageSize);
 
-                Console.WriteLine(string.Join("\n", bookList));
+                //Console.WriteLine(string.Join("\n", bookList));
                 Console.WriteLine();
                 Console.WriteLine("\n", string.Join("\n", authorList));
 

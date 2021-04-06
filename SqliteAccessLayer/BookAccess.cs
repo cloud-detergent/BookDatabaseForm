@@ -21,10 +21,11 @@ namespace SqliteAccessLayer
 FROM Authors a
     INNER JOIN AuthorsBooks AB on a.id = AB.authorId
     INNER JOIN Books b on b.id = AB.bookId
+    WHERE a.firstName like $query
     ORDER BY b.id ASC
     LIMIT $pageSize OFFSET $startIndex";
 
-        public IEnumerable<Book> GetList(int pageSize, int offset)
+        public IEnumerable<Book> GetList(int pageSize, int offset, string query = "")
         {
             List<Book> books = new List<Book>();
 
@@ -32,19 +33,15 @@ FROM Authors a
             connection.Open();
 
             SqliteCommand cmd = new SqliteCommand(selectQuery, connection);
+            cmd.Parameters.AddWithValue("$query", $"%{query}%");
             cmd.Parameters.AddWithValue("$pageSize", pageSize);
             cmd.Parameters.AddWithValue("$startIndex", offset);
+
             SqliteDataReader sdr = cmd.ExecuteReader();
 
             bool flag = false;
             while (sdr.Read())
             {
-                //var book = new Book()
-                //{
-                //    Id = Convert.ToInt32(sdr["id"]),
-                //    Name = sdr["name"].ToString()
-                //};
-
                 Book book = books.Find(x => x.Name.Equals(sdr.GetString(1)));
 
                 flag = true;
@@ -77,40 +74,40 @@ FROM Authors a
             return books;
         }
 
-        public DataTable GetList()
+        public DataTable GetDataTable(int pageSize, int offset, string query = "")
         {
             return new DataTable();
         }
 
-        public DataTable GetDataByFirstName(string query)
-        {
-            // SELECT b.id, b.name, a.id, a.firstName, a.lastName
-            IEnumerable<Book> list = GetList(10, 0);
+        //public DataTable GetDataByQuery(string query)
+        //{
+        //    // SELECT b.id, b.name, a.id, a.firstName, a.lastName
+        //    IEnumerable<Book> list = GetList(10, 0);
 
-            DataTable dt = new DataTable();
-            dt.Columns.Add("Id книги");
-            dt.Columns.Add("Название");
-            dt.Columns.Add("Id автора");
-            dt.Columns.Add("Имя автора");
-            dt.Columns.Add("Фамилия автора");
+        //    DataTable dt = new DataTable();
+        //    dt.Columns.Add("Id книги");
+        //    dt.Columns.Add("Название");
+        //    dt.Columns.Add("Id автора");
+        //    dt.Columns.Add("Имя автора");
+        //    dt.Columns.Add("Фамилия автора");
 
-            foreach (Book item in list)
-            {
-                var a = item.Authors;
+        //    foreach (Book item in list)
+        //    {
+        //        var a = item.Authors;
 
-                string[] bookParams = new string[5]
-                    {
-                        item.Id.ToString(),
-                        item.Name,
-                        string.Join("; ", a.Select(x => x.Id)),
-                        string.Join("; ", a.Select(x => x.FirstName)),
-                        string.Join("; ", a.Select(x => x.LastName))
-                    };
+        //        string[] bookParams = new string[5]
+        //            {
+        //                item.Id.ToString(),
+        //                item.Name,
+        //                string.Join("; ", a.Select(x => x.Id)),
+        //                string.Join("; ", a.Select(x => x.FirstName)),
+        //                string.Join("; ", a.Select(x => x.LastName))
+        //            };
 
-                dt.Rows.Add(bookParams);
-            }
+        //        dt.Rows.Add(bookParams);
+        //    }
 
-            return dt;
-        }
+        //    return dt;
+        //}
     }
 }

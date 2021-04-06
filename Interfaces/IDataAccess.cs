@@ -6,10 +6,8 @@ namespace Interfaces
 {
     public interface IDataAccess<T>
     {
-        public IEnumerable<T> GetList(int pageSize, int offset);
+        public IEnumerable<T> GetList(int pageSize, int offset, string query = "");
 
-        public DataTable GetList();
-
-        DataTable GetDataByFirstName(string query);
+        public DataTable GetDataTable(int pageSize, int offset, string query = "");
     }
 }

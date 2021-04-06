@@ -17,7 +17,7 @@ namespace SqliteAccessLayer
             this.connStr = connStr;
         }
 
-        public IEnumerable<Author> GetList(int pageSize=10, int offset=0)
+        public IEnumerable<Author> GetList(int pageSize=10, int offset=0, string query = "")
         {
             List<Author> authors = new List<Author>();
 
@@ -42,12 +42,7 @@ namespace SqliteAccessLayer
             return authors;
         }
 
-        public DataTable GetList()
-        {
-            return new DataTable();
-        }
-        
-        public DataTable GetDataByFirstName(string query)
+        public DataTable GetDataTable(int pageSize, int offset, string query = "")
         {
             return new DataTable();
         }
