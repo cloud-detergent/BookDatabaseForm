@@ -1,21 +1,9 @@
 ﻿using Entities;
 using Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace UI
 {
@@ -28,15 +16,13 @@ namespace UI
         static string connStrSqlServer =
             @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Library;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-        public string query;
-
         IDataAccess<Author> authorAccess = new SqlServerAccessLayer.AuthorAccess(connStrSqlServer);
         IDataAccess<Book> bookAccess = new SqlServerAccessLayer.BookAccess(connStrSqlServer);
 
         public MainWindow()
         {
             InitializeComponent();
-            this.tbSearchQuery.DataContext = query;
+            
             this.tbSearchQuery.DataContextChanged += TbSearchQuery_DataContextChanged;
             this.tbSearchQuery.TextChanged += TbSearchQuery_TextChanged;
 
@@ -72,15 +58,14 @@ namespace UI
         private void SearchData()
         {
             Debug.WriteLine(this.tbSearchQuery.Text);
-            Debug.WriteLine(this.query);
 
-            DataTable dt = bookAccess.GetDataTable(0, 10, this.tbSearchQuery.Text);
+            DataTable dt = bookAccess.GetDataTable(20, 0, this.tbSearchQuery.Text);
             dataGridView.ItemsSource = dt.DefaultView;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            DataTable dt = bookAccess.GetDataTable(10, 0);
+            DataTable dt = bookAccess.GetDataTable(20, 0);
             dataGridView.ItemsSource = dt.DefaultView;
         }
 
@@ -90,6 +75,7 @@ namespace UI
         {
             creationForm = new BookForm(authorAccess, bookAccess);
             creationForm.ShowDialog();
+            SearchData();
         }
     }
 }
